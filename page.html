@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="jquery.min.js"></script>
+		
+		<style>
+			#shopbtn{
+				font-size: 30px;
+				padding: 5px 10px;
+				border: 1px solid red;
+				margin-bottom: 20px;
+				cursor: pointer;
+			}
+			p,button{
+				margin-left:80px;
+			}
+			img{
+				margin-left:40px ;
+			} 
+		</style>
+		<script src="cookie.js"></script>
+	</head>
+	<body>
+		
+		<div class="shopinfo">
+			<!--<img src="img/1.jpg" alt="" />
+			<p>小米1</p>
+			<p>333</p>
+			<button>购买</button>-->
+		</div>
+		
+			
+	</body>
+</html>
+<script type="text/javascript">
+ 	//页面加载  获取到要显示的商品的编号和类型
+ 	window.onload = function(){
+ 		//获取到路径的信息 就可以得到 商品的编号和类型
+ 		var str=location.href;
+ 		//http://127.0.0.1/shopCart1803/page.html?pid=shop16&cname=classify002
+ 		var sta=str.split("?")[1];
+ 		//pid=shop16&cname=classify002
+ 		var id=sta.split("&")[0].split("=")[1];
+ 		var cname=sta.split("&")[1].split("=")[1];
+ 		//通过ajax请求服务器json数据
+ 		$.ajax({
+ 			type:"get",
+ 			url:"data.json",
+ 			async:true,
+ 			success:function(json){
+ 				//遍历 cname下的所有的list 
+ 				//判断 list中哪一个对象的id  和 路径中的id相等
+ 				var str="";
+ 				for (var i=0;i<json[cname].list.length;i++) {
+ 					if (json[cname].list[i].id==id) {
+ 						str=`<img src="img/${json[cname].list[i].src}" alt="" />
+								<p>${json[cname].list[i].name}</p>
+								<p>${json[cname].list[i].price}</p>
+								<button>购买</button>`;
+ 					}
+ 				}
+ 				$(".shopinfo").html(str);
+ 			}
+ 		});
+ 	
+ 		 
+ 	}
+</script>
